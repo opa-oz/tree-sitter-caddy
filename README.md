@@ -11,7 +11,7 @@
     - [x] Protocol, domain, port in any order 
     - [x] Multiple addresses
     - [ ] No need for `{}` when only one server
-    - [ ] Environment variables in address ex. `{$DOMAIN:localhost}`
+    - [x] Environment variables in address ex. `{$DOMAIN:localhost}`
 - [ ] Tokens and quotes
     - [x] directive "simple string"
     - [x] directive "\"simple string\""
@@ -33,7 +33,7 @@
 - [ ] Matchers
 - [ ] Placeholders
 - [ ] Snippets
-- [ ] Named Routes
+- [x] Named Routes
 - [x] Comments
-- [ ] Environment variables
+- [x] Environment variables
 

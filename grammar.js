@@ -16,7 +16,8 @@ module.exports = grammar({
   extras: ($) => [/\s/, $.comment],
   externals: ($) => [$._newline, $._indent, $._dedent],
   rules: {
-    source_file: ($) => repeat(choice($.server, $.global_options)),
+    source_file: ($) =>
+      repeat(choice($.server, $.global_options, $.named_route)),
     comment: (_) => prec.left(token(seq("#", /.*/))),
 
     // NOTE: Block
@@ -27,6 +28,10 @@ module.exports = grammar({
     //  @link https://caddyserver.com/docs/caddyfile/concepts#blocks
     _body: ($) => repeat1(choice($.block, $.directive)),
     block: ($) => seq("{", $._newline, optional($._body), "}"),
+
+    // NOTE: Named routes
+    named_route: ($) => seq($.route, $.block),
+    route: ($) => seq("&(", $._word, ")"),
 
     // NOTE: Global options
     global_options: ($) =>

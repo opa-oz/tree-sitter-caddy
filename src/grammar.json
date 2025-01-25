@@ -14,6 +14,10 @@
           {
             "type": "SYMBOL",
             "name": "global_options"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "named_route"
           }
         ]
       }
@@ -80,6 +84,36 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "named_route": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "route"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "block"
+        }
+      ]
+    },
+    "route": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "&("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_word"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     },

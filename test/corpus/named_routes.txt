@@ -1,0 +1,18 @@
+==================
+Named Routes
+https://caddyserver.com/docs/caddyfile/concepts#named-routes
+==================
+&(app-proxy) {
+	reverse_proxy app-01:8080 app-02:8080 app-03:8080
+}
+---
+
+(source_file
+  (named_route
+    (route)
+    (block
+      (directive
+        (keyword)
+        (value)
+        (value)
+        (value)))))

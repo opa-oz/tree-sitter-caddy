@@ -78,6 +78,25 @@
     }
   },
   {
+    "type": "named_route",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "route",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "option",
     "named": true,
     "fields": {},
@@ -118,6 +137,11 @@
     "fields": {}
   },
   {
+    "type": "route",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "server",
     "named": true,
     "fields": {},
@@ -154,11 +178,23 @@
           "named": true
         },
         {
+          "type": "named_route",
+          "named": true
+        },
+        {
           "type": "server",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "&(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
   },
   {
     "type": ",",
