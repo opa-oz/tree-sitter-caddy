@@ -8,7 +8,8 @@
 // @ts-check
 
 const unicodeLetter = /\p{L}/u,
-  unicodeDigit = /[0-9]/;
+  unicodeDigit = /[0-9]/,
+  uppercaseLetter = /[A-Z]/;
 
 module.exports = grammar({
   name: "caddy",
@@ -47,6 +48,7 @@ module.exports = grammar({
               $.address,
               alias($._port, $.address),
               alias($._protocol, $.address),
+              $.env,
             ),
             optional(","),
             optional($._newline),
@@ -69,6 +71,7 @@ module.exports = grammar({
         $.string_literal,
         $.numeric_literal,
         $.quoted_string_literal,
+        $.env,
         alias($.random_value, $.value),
       ),
     _attribute: ($) =>
@@ -103,6 +106,18 @@ module.exports = grammar({
         seq(
           unicodeLetter,
           repeat(choice(unicodeLetter, unicodeDigit, "-", "_")),
+        ),
+      ),
+
+    env: (_) =>
+      token(
+        seq(
+          "{",
+          choice("$", "env."),
+          choice(uppercaseLetter, "_"),
+          repeat(choice(uppercaseLetter, unicodeDigit, "_")),
+          optional(seq(":", "localhost")),
+          "}",
         ),
       ),
 

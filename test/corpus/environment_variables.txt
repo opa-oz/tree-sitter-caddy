@@ -1,0 +1,33 @@
+==================
+Environment variables
+https://caddyserver.com/docs/caddyfile/concepts#environment-variables
+==================
+{
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+example.com {
+	reverse_proxy {$UPSTREAMS}
+}
+
+{$DOMAIN:localhost} {
+    debug
+}
+
+---
+(source_file
+  (global_options
+    (option
+      (name)
+      (value)
+      (env)))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (env))))
+  (server
+    (env)
+    (block
+      (directive))))

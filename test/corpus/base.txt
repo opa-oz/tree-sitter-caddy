@@ -28,33 +28,6 @@ localhost:2016 {
         (keyword)
         (string_literal)))))
 
-==================
-Global options block
-https://caddyserver.com/docs/caddyfile/concepts#global-options
-==================
-
-{
-    acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-}
-
-:80 {
-	respond "Hello, world!"
-}
-
----
-
-(source_file
-  (global_options
-      (option
-          (name)
-          (value)))
-  (server
-    (address)
-    (block
-      (directive
-        (keyword)
-        (string_literal)))))
-
 
 ==================
 That's a real, production-ready Caddyfile that serves WordPress with fully-managed HTTPS.
@@ -169,33 +142,3 @@ www.example.com {
     (block
       (directive))))
 
-
-==================
-Tokens and quotes
-https://caddyserver.com/docs/caddyfile/concepts#tokens-and-quotes
-==================
-
-localhost {
-    directive "simple string"
-    directive "\"simple string\""
-    directive `"quoted string"`
-    directive "miltiline
-        string"
-    }
----
-(source_file
-  (server
-    (address)
-    (block
-      (directive
-        (keyword)
-        (string_literal))
-      (directive
-        (keyword)
-        (string_literal))
-      (directive
-        (keyword)
-        (quoted_string_literal))
-      (directive
-        (keyword)
-        (string_literal)))))

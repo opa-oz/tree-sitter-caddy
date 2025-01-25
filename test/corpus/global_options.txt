@@ -1,0 +1,27 @@
+==================
+Global options block
+https://caddyserver.com/docs/caddyfile/concepts#global-options
+==================
+
+{
+    acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+:80 {
+	respond "Hello, world!"
+}
+
+---
+
+(source_file
+  (global_options
+      (option
+          (name)
+          (value)))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (string_literal)))))
+
