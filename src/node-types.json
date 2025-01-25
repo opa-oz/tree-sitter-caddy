@@ -48,6 +48,10 @@
           "named": true
         },
         {
+          "type": "ip_literal",
+          "named": true
+        },
+        {
           "type": "keyword",
           "named": true
         },
@@ -118,6 +122,10 @@
         },
         {
           "type": "env",
+          "named": true
+        },
+        {
+          "type": "ip_literal",
           "named": true
         },
         {
@@ -262,6 +270,10 @@
   },
   {
     "type": "env",
+    "named": true
+  },
+  {
+    "type": "ip_literal",
     "named": true
   },
   {

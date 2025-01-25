@@ -32,7 +32,6 @@ module.exports = grammar({
     // Opening and closing a block is done with curly braces:
     //  - The open curly brace { must be at the end of its line and preceded by a space.
     //  - The close curly brace } must be on its own line.
-    //
     //  @link https://caddyserver.com/docs/caddyfile/concepts#blocks
     _body: ($) =>
       repeat1(
@@ -67,6 +66,12 @@ module.exports = grammar({
     sblock: (_) => token("{block}"),
     snippet: ($) => seq($.snippet_name, $.block),
     snippet_name: ($) => seq("(", $._word, ")"),
+    // NOTE:
+    // The import directive can also be used to include other files in its place.
+    // If the argument does not match a defined snippet, it will be tried as a file.
+    // It also supports globs to import multiple files.
+    // As a special case, it can appear anywhere within the Caddyfile (except as an argument to another directive),
+    //    including outside of site blocks
     import: ($) =>
       prec(
         2,
@@ -115,6 +120,7 @@ module.exports = grammar({
       choice(
         $.string_literal,
         $.numeric_literal,
+        $.ip_literal,
         $.quoted_string_literal,
         $.env,
         $.argv,
@@ -125,7 +131,11 @@ module.exports = grammar({
         alias(choice($._word, "''"), $.keyword),
         choice(
           $.block,
-          seq($._attribute_value, repeat(seq(/\s/, $._attribute_value))),
+          seq(
+            $._attribute_value,
+            repeat(seq(/\s/, $._attribute_value)),
+            optional(seq(optional(/\s/), $.block)),
+          ),
         ),
         $._newline,
       ),
@@ -133,10 +143,12 @@ module.exports = grammar({
     directive: ($) => choice($._attribute, $._function),
 
     // NOTE: Simple values
-    random_value: (_) => token(prec(-1, /[^;\s]*/)), // https://github.com/tree-sitter/tree-sitter/issues/1655
+    random_value: (_) => token(prec(-1, /[^\s]*/)), // https://github.com/tree-sitter/tree-sitter/issues/1655
     quoted_string_literal: (_) =>
       prec.right(token(seq("`", repeat(/[^`]|(\\\`)/), "`"))),
     string_literal: (_) => token(seq('"', repeat(/[^"]|(\\\")/), '"')),
+    ip_literal: (_) =>
+      token(seq(repeat1(/[0-9]/), repeat1(seq(".", /[0-9]/)), /[0-9]/)),
     numeric_literal: (_) =>
       token(
         seq(
