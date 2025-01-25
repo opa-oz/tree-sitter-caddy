@@ -1,0 +1,170 @@
+==================
+Basic servers
+==================
+
+localhost {
+	respond "Hello, world!"
+}
+
+localhost:2016 {
+    # Random comment
+	respond "Goodbye, world!"
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (string_literal))))
+  (server
+    (address)
+    (block
+      (comment)
+      (directive
+        (keyword)
+        (string_literal)))))
+
+==================
+Global options block
+https://caddyserver.com/docs/caddyfile/concepts#global-options
+==================
+
+{
+    acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+:80 {
+	respond "Hello, world!"
+}
+
+---
+
+(source_file
+  (global_options
+      (option
+          (name)
+          (value)))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (string_literal)))))
+
+
+==================
+That's a real, production-ready Caddyfile that serves WordPress with fully-managed HTTPS.
+==================
+
+example.com {
+	root * /var/www/wordpress
+	encode gzip
+	php_fastcgi unix//run/php/php-version-fpm.sock
+	file_server
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value)
+        (value))
+      (directive
+        (keyword)
+        (value))
+      (directive
+        (keyword)
+        (value))
+      (directive))))
+
+
+==================
+Check address patterns
+https://caddyserver.com/docs/caddyfile/concepts#addresses
+==================
+*.example.com, 
+example.com, 
+www.example.com, 
+http://, 
+https://,
+http://example.com, 
+example.com:443, 
+:443,
+:8080,
+https://example.com:443,
+127.0.0.1,
+http://127.0.0.1 {
+    log	
+}
+---
+(source_file
+  (server
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (address)
+    (block
+      (directive))))
+
+==================
+If multiple sites share the same definition, you can list all of them together
+https://caddyserver.com/docs/caddyfile/concepts#addresses
+==================
+
+# Comma separated site addresses
+localhost:8080, example.com, www.example.com {
+    log	
+}
+
+# Space separated site addresses
+localhost:8080 example.com www.example.com {
+    log	
+}
+
+# Comma and new-line separated site addresses
+localhost:8080,
+example.com,
+www.example.com {
+    log
+}
+
+---
+
+(source_file
+  (comment)
+  (server
+    (address)
+    (address)
+    (address)
+    (block
+      (directive)))
+  (comment)
+  (server
+    (address)
+    (address)
+    (address)
+    (block
+      (directive)))
+  (comment)
+  (server
+    (address)
+    (address)
+    (address)
+    (block
+      (directive))))

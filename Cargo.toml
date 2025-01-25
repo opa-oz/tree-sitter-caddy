@@ -1,0 +1,27 @@
+[package]
+name = "tree-sitter-caddy"
+description = "Caddyfile support"
+version = "0.1.0"
+authors = ["Vladimir <opa-oz> Levin <opaozhub@gmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+keywords = ["incremental", "parsing", "tree-sitter", "caddy"]
+categories = ["parsing", "text-editors"]
+repository = "https://github.com/opa-oz/tree-sitter-caddy"
+edition = "2021"
+autoexamples = false
+
+build = "bindings/rust/build.rs"
+include = ["bindings/rust/*", "grammar.js", "queries/*", "src/*", "tree-sitter.json"]
+
+[lib]
+path = "bindings/rust/lib.rs"
+
+[dependencies]
+tree-sitter-language = "0.1"
+
+[build-dependencies]
+cc = "1.1.22"
+
+[dev-dependencies]
+tree-sitter = "0.24.4"
