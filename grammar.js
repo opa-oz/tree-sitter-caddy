@@ -17,7 +17,15 @@ module.exports = grammar({
   externals: ($) => [$._newline, $._indent, $._dedent],
   rules: {
     source_file: ($) =>
-      repeat(choice($.server, $.global_options, $.named_route)),
+      repeat(
+        choice(
+          $.server,
+          $.global_options,
+          $.named_route,
+          $.snippet,
+          alias($.import, $.directive),
+        ),
+      ),
     comment: (_) => prec.left(token(seq("#", /.*/))),
 
     // NOTE: Block
@@ -26,7 +34,15 @@ module.exports = grammar({
     //  - The close curly brace } must be on its own line.
     //
     //  @link https://caddyserver.com/docs/caddyfile/concepts#blocks
-    _body: ($) => repeat1(choice($.block, $.directive)),
+    _body: ($) =>
+      repeat1(
+        choice(
+          $.block,
+          $.directive,
+          alias($.sblock, $.block_variable),
+          alias($.import, $.directive),
+        ),
+      ),
     block: ($) => seq("{", $._newline, optional($._body), "}"),
 
     // NOTE: Named routes
@@ -42,6 +58,30 @@ module.exports = grammar({
         alias(choice($._word, "''"), $.name),
         choice(seq($._attribute_value, repeat(seq(/\s/, $._attribute_value)))),
         $._newline,
+      ),
+
+    // NOTE: Snippets
+    // You can pass arguments to an imported configuration (snippets or files) and use them
+    argv: (_) => token(seq("{args[", repeat1(unicodeDigit), "]")),
+    // You can also pass an optional block to an imported snippet, and use them
+    sblock: (_) => token("{block}"),
+    snippet: ($) => seq($.snippet_name, $.block),
+    snippet_name: ($) => seq("(", $._word, ")"),
+    import: ($) =>
+      prec(
+        2,
+        seq(
+          alias("import", $.keyword),
+          choice(
+            $.block,
+            seq(
+              $._attribute_value,
+              repeat(seq(/\s/, $._attribute_value)),
+              optional(seq(optional(/\s/), $.block)),
+            ),
+          ),
+          $._newline,
+        ),
       ),
 
     // NOTE: Server
@@ -77,6 +117,7 @@ module.exports = grammar({
         $.numeric_literal,
         $.quoted_string_literal,
         $.env,
+        $.argv,
         alias($.random_value, $.value),
       ),
     _attribute: ($) =>

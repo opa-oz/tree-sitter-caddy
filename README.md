@@ -32,7 +32,8 @@
         ```
 - [ ] Matchers
 - [ ] Placeholders
-- [ ] Snippets
+- [x] Snippets
+    - [x] `import` directive
 - [x] Named Routes
 - [x] Comments
 - [x] Environment variables

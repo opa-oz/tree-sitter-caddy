@@ -1,0 +1,142 @@
+==================
+Snippets
+https://caddyserver.com/docs/caddyfile/concepts#snippets
+==================
+
+(logging) {
+	log {
+		output file /var/log/caddy.log
+		format json
+	}
+}
+
+---
+
+(source_file
+  (snippet
+    (snippet_name)
+    (block
+      (directive
+        (keyword)
+        (block
+          (directive
+            (keyword)
+            (value)
+            (value))
+          (directive
+            (keyword)
+            (value)))))))
+
+==================
+`import` directive
+==================
+
+{
+	email admin@example.com
+}
+
+import sites/*
+
+---
+
+(source_file
+  (global_options
+    (option
+      (name)
+      (value)))
+  (directive
+    (keyword)
+    (value)))
+
+==================
+You can pass arguments to an imported configuration (snippets or files)
+==================
+
+(snippet) {
+	respond "Yahaha! You found {args[0]}!"
+}
+
+a.example.com {
+	import snippet "Example A"
+}
+
+b.example.com {
+	import snippet "Example B"
+}
+
+---
+
+(source_file
+  (snippet
+    (snippet_name)
+    (block
+      (directive
+        (keyword)
+        (string_literal))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value)
+        (string_literal))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value)
+        (string_literal)))))
+
+==================
+You can also pass an optional block to an imported snippet
+==================
+(snippet) {
+	{block}
+	respond "OK"
+}
+
+a.example.com {
+	import snippet {
+		header +foo bar
+	}
+}
+
+b.example.com {
+	import snippet {
+		header +bar foo
+	}
+}
+
+---
+
+(source_file
+  (snippet
+    (snippet_name)
+    (block
+      (block_variable)
+      (directive
+        (keyword)
+        (string_literal))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value)
+        (block
+          (directive
+            (keyword)
+            (value)
+            (value))))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value)
+        (block
+          (directive
+            (keyword)
+            (value)
+            (value)))))))

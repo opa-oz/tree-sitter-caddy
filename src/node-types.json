@@ -12,6 +12,10 @@
           "named": true
         },
         {
+          "type": "block_variable",
+          "named": true
+        },
+        {
           "type": "directive",
           "named": true
         }
@@ -31,6 +35,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "argv",
+          "named": true
+        },
         {
           "type": "block",
           "named": true
@@ -105,6 +113,10 @@
       "required": true,
       "types": [
         {
+          "type": "argv",
+          "named": true
+        },
+        {
           "type": "env",
           "named": true
         },
@@ -165,6 +177,30 @@
     }
   },
   {
+    "type": "snippet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "snippet_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "snippet_name",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -173,6 +209,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "directive",
+          "named": true
+        },
         {
           "type": "global_options",
           "named": true
@@ -184,12 +224,20 @@
         {
           "type": "server",
           "named": true
+        },
+        {
+          "type": "snippet",
+          "named": true
         }
       ]
     }
   },
   {
     "type": "&(",
+    "named": false
+  },
+  {
+    "type": "(",
     "named": false
   },
   {
@@ -202,6 +250,14 @@
   },
   {
     "type": "address",
+    "named": true
+  },
+  {
+    "type": "argv",
+    "named": true
+  },
+  {
+    "type": "block_variable",
     "named": true
   },
   {
