@@ -168,3 +168,34 @@ www.example.com {
     (address)
     (block
       (directive))))
+
+
+==================
+Tokens and quotes
+https://caddyserver.com/docs/caddyfile/concepts#tokens-and-quotes
+==================
+
+localhost {
+    directive "simple string"
+    directive "\"simple string\""
+    directive `"quoted string"`
+    directive "miltiline
+        string"
+    }
+---
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (string_literal))
+      (directive
+        (keyword)
+        (string_literal))
+      (directive
+        (keyword)
+        (quoted_string_literal))
+      (directive
+        (keyword)
+        (string_literal)))))

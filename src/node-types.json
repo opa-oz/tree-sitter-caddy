@@ -1,10 +1,5 @@
 [
   {
-    "type": "address",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "block",
     "named": true,
     "fields": {},
@@ -46,6 +41,10 @@
         },
         {
           "type": "numeric_literal",
+          "named": true
+        },
+        {
+          "type": "quoted_string_literal",
           "named": true
         },
         {
@@ -91,6 +90,10 @@
           "named": true
         },
         {
+          "type": "quoted_string_literal",
+          "named": true
+        },
+        {
           "type": "string_literal",
           "named": true
         },
@@ -100,6 +103,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "quoted_string_literal",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "server",
@@ -143,6 +151,10 @@
   {
     "type": ",",
     "named": false
+  },
+  {
+    "type": "address",
+    "named": true
   },
   {
     "type": "keyword",

@@ -18,8 +18,16 @@ module.exports = grammar({
     source_file: ($) => repeat(choice($.server, $.global_options)),
     comment: (_) => prec.left(token(seq("#", /.*/))),
 
+    // NOTE: Block
+    // Opening and closing a block is done with curly braces:
+    //  - The open curly brace { must be at the end of its line and preceded by a space.
+    //  - The close curly brace } must be on its own line.
+    //
+    //  @link https://caddyserver.com/docs/caddyfile/concepts#blocks
     _body: ($) => repeat1(choice($.block, $.directive)),
-    block: ($) => seq("{", optional($._newline), optional($._body), "}"),
+    block: ($) => seq("{", $._newline, optional($._body), "}"),
+
+    // NOTE: Global options
     global_options: ($) =>
       seq("{", optional($._newline), optional($.option), "}"),
 
@@ -30,6 +38,7 @@ module.exports = grammar({
         $._newline,
       ),
 
+    // NOTE: Server
     server: ($) =>
       seq(
         repeat1(
@@ -39,11 +48,6 @@ module.exports = grammar({
               alias($._port, $.address),
               alias($._protocol, $.address),
             ),
-            // choice(
-            //   $.domain,
-            //   seq($.domain, optional($.port)),
-            //   seq(optional($.domain), $.port),
-            // ),
             optional(","),
             optional($._newline),
           ),
@@ -52,18 +56,19 @@ module.exports = grammar({
         optional($._newline),
       ),
 
-    _word: (_) =>
-      token(
-        seq(
-          unicodeLetter,
-          repeat(choice(unicodeLetter, unicodeDigit, "-", "_")),
-        ),
-      ),
-
+    // NOTE: Directive
+    // Directives are functional keywords which customize how the site is served.
+    // They must appear within site blocks. For example, a complete file server config might look like this:
+    // ```caddy
+    //  localhost {
+    //    file_server
+    //  }
+    // ```
     _attribute_value: ($) =>
       choice(
         $.string_literal,
         $.numeric_literal,
+        $.quoted_string_literal,
         alias($.random_value, $.value),
       ),
     _attribute: ($) =>
@@ -78,6 +83,10 @@ module.exports = grammar({
     _function: ($) => seq($._word, $._newline),
     directive: ($) => choice($._attribute, $._function),
 
+    // NOTE: Simple values
+    random_value: (_) => token(prec(-1, /[^;\s]*/)), // https://github.com/tree-sitter/tree-sitter/issues/1655
+    quoted_string_literal: (_) =>
+      prec.right(token(seq("`", repeat(/[^`]|(\\\`)/), "`"))),
     string_literal: (_) => token(seq('"', repeat(/[^"]|(\\\")/), '"')),
     numeric_literal: (_) =>
       token(
@@ -89,20 +98,17 @@ module.exports = grammar({
           ),
         ),
       ),
-    address: (_) => seq(/(https?:\/\/)?\*?[0-9a-zA-Z.-]+(:[0-9]+)?/),
+    _word: (_) =>
+      token(
+        seq(
+          unicodeLetter,
+          repeat(choice(unicodeLetter, unicodeDigit, "-", "_")),
+        ),
+      ),
+
+    // NOTE: Address related
+    address: (_) => token(/(https?:\/\/)?\*?[0-9a-zA-Z.-]+(:[0-9]+)?/),
     _protocol: (_) => token(seq(choice("http:", "https:"), "//")),
     _port: (_) => token(seq(":", repeat1(unicodeDigit))),
-
-    // _protocol: (_) => token(seq(choice("http:", "https:"), "//")),
-    // _port: (_) => token(seq(":", repeat1(unicodeDigit))),
-    // _domain: (_) =>
-    //   token(
-    //     seq(
-    //       choice(unicodeLetter, unicodeDigit, "*"),
-    //       repeat(choice(unicodeLetter, unicodeDigit, "-", ".")),
-    //     ),
-    //   ),
-
-    random_value: (_) => token(prec(-1, /[^;\s]*/)), // https://github.com/tree-sitter/tree-sitter/issues/1655
   },
 });

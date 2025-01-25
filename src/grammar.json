@@ -62,16 +62,8 @@
           "value": "{"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_newline"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_newline"
         },
         {
           "type": "CHOICE",
@@ -265,44 +257,6 @@
         }
       ]
     },
-    "_word": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "\\p{L}",
-            "flags": "u"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "PATTERN",
-                  "value": "\\p{L}",
-                  "flags": "u"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[0-9]"
-                },
-                {
-                  "type": "STRING",
-                  "value": "-"
-                },
-                {
-                  "type": "STRING",
-                  "value": "_"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
     "_attribute_value": {
       "type": "CHOICE",
       "members": [
@@ -313,6 +267,10 @@
         {
           "type": "SYMBOL",
           "name": "numeric_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "quoted_string_literal"
         },
         {
           "type": "ALIAS",
@@ -411,6 +369,44 @@
           "name": "_function"
         }
       ]
+    },
+    "random_value": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^;\\s]*"
+        }
+      }
+    },
+    "quoted_string_literal": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "TOKEN",
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "`"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "PATTERN",
+                "value": "[^`]|(\\\\\\`)"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "`"
+            }
+          ]
+        }
+      }
     },
     "string_literal": {
       "type": "TOKEN",
@@ -528,14 +524,50 @@
         ]
       }
     },
+    "_word": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "\\p{L}",
+            "flags": "u"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\p{L}",
+                  "flags": "u"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[0-9]"
+                },
+                {
+                  "type": "STRING",
+                  "value": "-"
+                },
+                {
+                  "type": "STRING",
+                  "value": "_"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
     "address": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "(https?:\\/\\/)?\\*?[0-9a-zA-Z.-]+(:[0-9]+)?"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "(https?:\\/\\/)?\\*?[0-9a-zA-Z.-]+(:[0-9]+)?"
+      }
     },
     "_protocol": {
       "type": "TOKEN",
@@ -579,17 +611,6 @@
             }
           }
         ]
-      }
-    },
-    "random_value": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
-          "type": "PATTERN",
-          "value": "[^;\\s]*"
-        }
       }
     }
   },
