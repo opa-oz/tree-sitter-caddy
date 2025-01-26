@@ -51,3 +51,6 @@
 - [ ] Expressions
     - [x] After-placeholder expressions (`{method}.startsWith("P")`)
     - [ ] Expressions (`header({'Connection':'*Upgrade*','Upgrade':'websocket'}`) 
+- [ ] Special cases
+    - [ ] Placeholders can't be found in random string (`redir https://www.{host}{uri}`)
+	

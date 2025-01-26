@@ -1,0 +1,400 @@
+==================
+Static file server
+https://caddyserver.com/docs/caddyfile/patterns
+==================
+
+example.com {
+	root * /var/www
+	file_server
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive))))
+
+==================
+Reverse proxy
+==================
+example.com {
+	reverse_proxy localhost:5000
+}
+
+example.com {
+	root * /var/www
+	reverse_proxy /api/* localhost:5000
+	file_server
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive))))
+
+==================
+PHP
+==================
+
+# PHP-FPM
+example.com {
+	root * /srv/public
+	encode gzip
+	php_fastcgi localhost:9000
+	file_server
+}
+
+# FrankenPHP
+{
+    frankenphp
+    order php_server before file_server
+}
+
+example.com {
+	root * /srv/public
+    encode zstd br gzip
+    php_server
+}
+
+---
+
+(source_file
+  (comment)
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (value))
+      (directive
+        (keyword)
+        (value))
+      (directive)))
+  (comment)
+  (global_options
+    (option)
+    (option
+      (keyword)
+      (value)
+      (value)
+      (value)))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (value)
+        (value)
+        (value))
+      (directive))))
+
+==================
+Redirect www. subdomain
+==================
+
+example.com {
+	redir https://www.{host}{uri}
+}
+
+www.example.com {
+}
+
+www.example-one.com, www.example-two.com {
+	redir https://{labels.1}.{labels.0}{uri}
+}
+
+example-one.com, example-two.com {
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value))))
+  (server
+    (address)
+    (block))
+  (server
+    (address)
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value))))
+  (server
+    (address)
+    (address)
+    (block)))
+
+==================
+Trailing slashes
+==================
+
+# Internal enforcement
+example.com {
+	rewrite /add     /add/
+	rewrite /remove/ /remove
+}
+
+# External enforcement
+example.com {
+	redir /add     /add/
+	redir /remove/ /remove
+}
+
+---
+
+(source_file
+  (comment)
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (value))))
+  (comment)
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (value)))))
+
+==================
+Wildcard certificates
+==================
+
+*.example.com {
+	tls {
+		dns <provider_name> [<params...>]
+	}
+
+	@foo host foo.example.com
+	handle @foo {
+		respond "Foo!"
+	}
+
+	@bar host bar.example.com
+	handle @bar {
+		respond "Bar!"
+	}
+
+	# Fallback for otherwise unhandled domains
+	handle {
+		abort
+	}
+}
+
+---
+    
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (block
+          (directive
+            (keyword)
+            (value)
+            (value))))
+      (directive
+        (matcher)
+        (value)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (block
+          (directive
+            (keyword)
+            (string_literal))))
+      (directive
+        (matcher)
+        (value)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (block
+          (directive
+            (keyword)
+            (string_literal))))
+      (comment)
+      (directive
+        (keyword)
+        (block
+          (directive))))))
+
+==================
+Single-page apps (SPAs)
+==================
+
+example.com {
+	root * /srv
+	encode gzip
+	try_files {path} /index.html
+	file_server
+}
+
+example.com {
+	encode gzip
+
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+
+    route {
+        try_files {path} /index.html
+        header /index.html Cache-Control "public, max-age=0, must-revalidate"
+    }
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (value))
+      (directive
+        (keyword)
+        (placeholder)
+        (value))
+      (directive)))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (block
+          (directive
+            (keyword)
+            (value))))
+      (directive
+        (keyword)
+        (block
+          (directive
+            (keyword)
+            (matcher)
+            (value))
+          (directive
+            (keyword)
+            (placeholder)
+            (value))
+          (directive)))
+      (directive
+        (keyword)
+        (block
+          (directive
+            (keyword)
+            (placeholder)
+            (value))
+          (directive
+            (keyword)
+            (matcher)
+            (value)
+            (string_literal)))))))
+
+==================
+Caddy proxying to another Caddy
+==================
+
+{
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+http://foo.example.com {
+	reverse_proxy foo-app:8080
+}
+
+http://bar.example.com {
+	reverse_proxy bar-app:9000
+}
+
+---
+
+(source_file
+  (global_options
+    (option
+      (keyword)
+      (block
+        (directive
+          (keyword)
+          (value)
+          (value)))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value))))
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (value)))))
