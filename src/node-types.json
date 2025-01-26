@@ -23,6 +23,25 @@
     }
   },
   {
+    "type": "boolean",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "off",
+          "named": true
+        },
+        {
+          "type": "on",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "comment",
     "named": true,
     "fields": {}
@@ -40,7 +59,15 @@
           "named": true
         },
         {
+          "type": "auto",
+          "named": true
+        },
+        {
           "type": "block",
+          "named": true
+        },
+        {
+          "type": "boolean",
           "named": true
         },
         {
@@ -60,11 +87,23 @@
           "named": true
         },
         {
+          "type": "placeholder",
+          "named": true
+        },
+        {
           "type": "quoted_string_literal",
           "named": true
         },
         {
+          "type": "size",
+          "named": true
+        },
+        {
           "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "time",
           "named": true
         },
         {
@@ -79,8 +118,8 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "option",
@@ -114,10 +153,22 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "argv",
+          "named": true
+        },
+        {
+          "type": "auto",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "boolean",
           "named": true
         },
         {
@@ -129,7 +180,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "keyword",
           "named": true
         },
         {
@@ -137,11 +188,23 @@
           "named": true
         },
         {
+          "type": "placeholder",
+          "named": true
+        },
+        {
           "type": "quoted_string_literal",
           "named": true
         },
         {
+          "type": "size",
+          "named": true
+        },
+        {
           "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "time",
           "named": true
         },
         {
@@ -241,6 +304,25 @@
     }
   },
   {
+    "type": "string_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "placeholder",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
     "type": "&(",
     "named": false
   },
@@ -265,6 +347,10 @@
     "named": true
   },
   {
+    "type": "auto",
+    "named": true
+  },
+  {
     "type": "block_variable",
     "named": true
   },
@@ -281,15 +367,27 @@
     "named": true
   },
   {
-    "type": "name",
-    "named": true
-  },
-  {
     "type": "numeric_literal",
     "named": true
   },
   {
-    "type": "string_literal",
+    "type": "off",
+    "named": true
+  },
+  {
+    "type": "on",
+    "named": true
+  },
+  {
+    "type": "placeholder",
+    "named": true
+  },
+  {
+    "type": "size",
+    "named": true
+  },
+  {
+    "type": "time",
     "named": true
   },
   {

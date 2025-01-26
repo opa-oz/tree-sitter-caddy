@@ -50,14 +50,7 @@ module.exports = grammar({
 
     // NOTE: Global options
     global_options: ($) =>
-      seq("{", optional($._newline), optional($.option), "}"),
-
-    option: ($) =>
-      seq(
-        alias(choice($._word, "''"), $.name),
-        choice(seq($._attribute_value, repeat(seq(/\s/, $._attribute_value)))),
-        $._newline,
-      ),
+      seq("{", $._newline, repeat1(alias($.directive, $.option)), "}"),
 
     // NOTE: Snippets
     // You can pass arguments to an imported configuration (snippets or files) and use them
@@ -118,12 +111,17 @@ module.exports = grammar({
     // ```
     _attribute_value: ($) =>
       choice(
+        $.placeholder,
         $.string_literal,
         $.numeric_literal,
         $.ip_literal,
         $.quoted_string_literal,
         $.env,
         $.argv,
+        $.time,
+        $.size,
+        $.boolean,
+        $.auto,
         alias($.random_value, $.value),
       ),
     _attribute: ($) =>
@@ -144,9 +142,25 @@ module.exports = grammar({
 
     // NOTE: Simple values
     random_value: (_) => token(prec(-1, /[^\s]*/)), // https://github.com/tree-sitter/tree-sitter/issues/1655
+    time: (_) => token(seq(repeat1(unicodeDigit), /(ms|s|m|h|d|w|M|y)/)), // https://nginx.org/en/docs/syntax.html
+    size: (_) => token(seq(repeat1(unicodeDigit), /[mkgMKG][ibB]*/)),
+    on: (_) => "on",
+    off: (_) => "off",
+    boolean: ($) => choice($.on, $.off),
+    auto: (_) => "auto",
+
     quoted_string_literal: (_) =>
       prec.right(token(seq("`", repeat(/[^`]|(\\\`)/), "`"))),
-    string_literal: (_) => token(seq('"', repeat(/[^"]|(\\\")/), '"')),
+    string_literal: ($) =>
+      seq('"', repeat(choice($.placeholder, /[^"]|(\\\")/)), '"'),
+    placeholder: (_) =>
+      token(
+        seq(
+          "{",
+          repeat1(choice(unicodeLetter, unicodeDigit, ".", "_", "*")),
+          "}",
+        ),
+      ),
     ip_literal: (_) =>
       token(seq(repeat1(/[0-9]/), repeat1(seq(".", /[0-9]/)), /[0-9]/)),
     numeric_literal: (_) =>
@@ -169,13 +183,16 @@ module.exports = grammar({
 
     env: (_) =>
       token(
-        seq(
-          "{",
-          choice("$", "env."),
-          choice(uppercaseLetter, "_"),
-          repeat(choice(uppercaseLetter, unicodeDigit, "_")),
-          optional(seq(":", "localhost")),
-          "}",
+        prec(
+          2,
+          seq(
+            "{",
+            choice("$", "env."),
+            choice(uppercaseLetter, "_"),
+            repeat(choice(uppercaseLetter, unicodeDigit, "_")),
+            optional(seq(":", "localhost")),
+            "}",
+          ),
         ),
       ),
 

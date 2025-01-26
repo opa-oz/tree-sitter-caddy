@@ -16,7 +16,7 @@ https://caddyserver.com/docs/caddyfile/concepts#global-options
 (source_file
   (global_options
       (option
-          (name)
+          (keyword)
           (value)))
   (server
     (address)
@@ -25,3 +25,58 @@ https://caddyserver.com/docs/caddyfile/concepts#global-options
         (keyword)
         (string_literal)))))
 
+
+==================
+Block options 
+==================
+
+{
+	http_port 4000
+	auto_https disable_redirects
+	admin :2020
+	servers {
+		timeouts {
+			read_body 10s
+			read_header 10s
+			write 10s
+			idle 2m
+		}
+
+		max_header_size 1MB
+	}
+}
+
+---
+
+(source_file
+  (global_options
+    (option
+      (keyword)
+      (numeric_literal))
+    (option
+      (keyword)
+      (value))
+    (option
+      (keyword)
+      (value))
+    (option
+      (keyword)
+      (block
+        (directive
+          (keyword)
+          (block
+            (directive
+              (keyword)
+              (time))
+            (directive
+              (keyword)
+              (time))
+            (directive
+              (keyword)
+              (time))
+            (directive
+              (keyword)
+              (time))))
+        (directive
+          (keyword)
+          (size))))))

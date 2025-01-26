@@ -42,7 +42,7 @@ import sites/*
 (source_file
   (global_options
     (option
-      (name)
+      (keyword)
       (value)))
   (directive
     (keyword)

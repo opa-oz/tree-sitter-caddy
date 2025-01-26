@@ -18,7 +18,7 @@ example.com {
 (source_file
   (global_options
     (option
-      (name)
+      (keyword)
       (value)
       (env)))
   (server
