@@ -126,11 +126,11 @@ module.exports = grammar({
       ),
     _attribute: ($) =>
       seq(
-        alias(choice($._word, "''"), $.keyword),
+        choice($.matcher, alias(choice($._word, "''"), $.keyword)),
         choice(
           $.block,
           seq(
-            $._attribute_value,
+            choice($._attribute_value, $.matcher),
             repeat(seq(/\s/, $._attribute_value)),
             optional(seq(optional(/\s/), $.block)),
           ),
@@ -139,6 +139,18 @@ module.exports = grammar({
       ),
     _function: ($) => seq($._word, $._newline),
     directive: ($) => choice($._attribute, $._function),
+
+    // NOTE: Matchers
+    _wildcard: (_) => "*",
+    _at: ($) => seq("@", $._word),
+    _path: (_) =>
+      token(
+        seq(
+          "/",
+          repeat(choice(unicodeDigit, unicodeLetter, "/", ".", "-", "_", "*")),
+        ),
+      ),
+    matcher: ($) => choice($._wildcard, $._at, $._path),
 
     // NOTE: Simple values
     random_value: (_) => token(prec(-1, /[^\s]*/)), // https://github.com/tree-sitter/tree-sitter/issues/1655
@@ -149,20 +161,36 @@ module.exports = grammar({
     boolean: ($) => choice($.on, $.off),
     auto: (_) => "auto",
 
-    quoted_string_literal: (_) =>
-      prec.right(token(seq("`", repeat(/[^`]|(\\\`)/), "`"))),
+    quoted_string_literal: ($) =>
+      prec.right(
+        seq("`", repeat(choice($.placeholder, $.argv, /[^`]|(\\\`)/)), "`"),
+      ),
     string_literal: ($) =>
-      seq('"', repeat(choice($.placeholder, /[^"]|(\\\")/)), '"'),
-    placeholder: (_) =>
-      token(
-        seq(
-          "{",
-          repeat1(choice(unicodeLetter, unicodeDigit, ".", "_", "*")),
-          "}",
-        ),
+      seq('"', repeat(choice($.placeholder, $.argv, /[^"]|(\\\")/)), '"'),
+    placeholder: ($) =>
+      seq(
+        "{",
+        repeat1(choice(unicodeLetter, unicodeDigit, ".", "_", "*")),
+        "}",
+        optional($._expressions),
+      ),
+    _expressions: ($) =>
+      seq(
+        ".",
+        $._word,
+        "(",
+        choice($.string_literal, $.boolean, $.numeric_literal),
+        ")",
       ),
     ip_literal: (_) =>
-      token(seq(repeat1(/[0-9]/), repeat1(seq(".", /[0-9]/)), /[0-9]/)),
+      token(
+        seq(
+          repeat1(/[0-9]/),
+          repeat1(seq(".", repeat1(/[0-9]/))),
+          optional(seq("/", repeat1(/[0-9]/))),
+          optional(seq(":", repeat1(/[0-9]/))),
+        ),
+      ),
     numeric_literal: (_) =>
       token(
         seq(

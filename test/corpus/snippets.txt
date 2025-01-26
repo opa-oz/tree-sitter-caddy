@@ -72,7 +72,8 @@ b.example.com {
     (block
       (directive
         (keyword)
-        (string_literal))))
+        (string_literal
+            (argv)))))
   (server
     (address)
     (block

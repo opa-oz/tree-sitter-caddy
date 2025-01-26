@@ -1,0 +1,148 @@
+==================
+Matchers
+https://caddyserver.com/docs/caddyfile/matchers
+==================
+
+localhost {
+    reverse_proxy * localhost:9000
+
+    reverse_proxy /api/* localhost:9000
+
+    @postfoo {
+        method POST
+        path /foo/*
+    }
+    reverse_proxy @postfoo localhost:9000
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (matcher)
+        (block
+          (directive
+            (keyword)
+            (value))
+          (directive
+            (keyword)
+            (matcher))))
+      (directive
+        (keyword)
+        (matcher)
+        (value)))))
+
+==================
+More examples
+==================
+
+localhost {
+    @post method POST
+    reverse_proxy @post localhost:6001
+
+    @private-ipv4 client_ip 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8 127.0.0.1/8
+}
+
+example.com {
+	@websockets {
+		header Connection *Upgrade*
+		header Upgrade    websocket
+	}
+	reverse_proxy @websockets localhost:6001
+
+	reverse_proxy localhost:8080
+    @not-found `{err.status_code} == 404`
+}
+
+example.com {
+	@denied not client_ip private_ranges
+	abort @denied
+
+	respond "Hello, you must be from a private network!"
+
+    @mutable `{method}.startsWith("P")`
+
+    @methods expression {method}.startsWith("P")
+}
+
+---
+
+(source_file
+  (server
+    (address)
+    (block
+      (directive
+        (matcher)
+        (value)
+        (value))
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (matcher)
+        (value)
+        (ip_literal)
+        (ip_literal)
+        (ip_literal)
+        (ip_literal))))
+  (server
+    (address)
+    (block
+      (directive
+        (matcher)
+        (block
+          (directive
+            (keyword)
+            (value)
+            (value))
+          (directive
+            (keyword)
+            (value)
+            (value))))
+      (directive
+        (keyword)
+        (matcher)
+        (value))
+      (directive
+        (keyword)
+        (value))
+      (directive
+        (matcher)
+        (quoted_string_literal
+            (placeholder)))))
+  (server
+    (address)
+    (block
+      (directive
+        (matcher)
+        (value)
+        (value)
+        (value))
+      (directive
+        (keyword)
+        (matcher))
+      (directive
+        (keyword)
+        (string_literal))
+      (directive
+        (matcher)
+        (quoted_string_literal
+            (placeholder
+                (string_literal))))
+      (directive
+        (matcher)
+        (value)
+        (placeholder
+          (string_literal))))))

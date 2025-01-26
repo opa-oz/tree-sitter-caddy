@@ -68,9 +68,11 @@ malinka.proxmox.opa-oz.live {
       (comment)
       (comment)
       (comment)
+
       (server
         (address)
         (block
+
           (directive
             (keyword)
             (value)
@@ -82,7 +84,7 @@ malinka.proxmox.opa-oz.live {
                 (env))
               (directive
                 (keyword)
-                (value))))
+                (ip_literal))))
           (directive
             (keyword)
             (value)
@@ -105,7 +107,7 @@ malinka.proxmox.opa-oz.live {
                 (env))
               (directive
                 (keyword)
-                (value))))
+                (ip_literal))))
           (directive
             (keyword)
             (value)
@@ -128,7 +130,7 @@ malinka.proxmox.opa-oz.live {
                 (env))
               (directive
                 (keyword)
-                (value))))
+                (ip_literal))))
           (directive
             (keyword)
             (value)
@@ -151,7 +153,7 @@ malinka.proxmox.opa-oz.live {
                 (env))
               (directive
                 (keyword)
-                (value))))
+                (ip_literal))))
           (directive
             (keyword)
             (value)

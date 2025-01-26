@@ -81,38 +81,38 @@ https://github.com/Kopano-dev/konnect
       (comment)
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
 
       (comment)
       (directive
         (keyword)
-        (value)
-        (value)
+        (matcher)
+        (ip_literal)
         (block
           (directive
             (keyword)
@@ -128,26 +128,26 @@ https://github.com/Kopano-dev/konnect
             (string_literal))))
       (directive
         (keyword)
-        (value)
-        (value)
+        (matcher)
+        (ip_literal)
         (block
           (directive)))
       (directive
         (keyword)
-        (value)
-        (value))
+        (matcher)
+        (ip_literal))
       (directive
         (keyword)
-        (value)
-        (value)
+        (matcher)
+        (ip_literal)
         (block
           (directive)))
 
       (comment)
       (directive
         (keyword)
-        (value)
-        (value)
+        (matcher)
+        (ip_literal)
         (block
           (directive)))
       (comment)

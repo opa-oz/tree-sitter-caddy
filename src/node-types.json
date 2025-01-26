@@ -83,6 +83,10 @@
           "named": true
         },
         {
+          "type": "matcher",
+          "named": true
+        },
+        {
           "type": "numeric_literal",
           "named": true
         },
@@ -127,6 +131,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "matcher",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "named_route",
@@ -184,6 +193,10 @@
           "named": true
         },
         {
+          "type": "matcher",
+          "named": true
+        },
+        {
           "type": "numeric_literal",
           "named": true
         },
@@ -215,9 +228,46 @@
     }
   },
   {
+    "type": "placeholder",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "numeric_literal",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "quoted_string_literal",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "argv",
+          "named": true
+        },
+        {
+          "type": "placeholder",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "route",
@@ -312,6 +362,10 @@
       "required": false,
       "types": [
         {
+          "type": "argv",
+          "named": true
+        },
+        {
           "type": "placeholder",
           "named": true
         }
@@ -335,7 +389,27 @@
     "named": false
   },
   {
+    "type": "*",
+    "named": false
+  },
+  {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": "@",
+    "named": false
+  },
+  {
+    "type": "_",
+    "named": false
+  },
+  {
+    "type": "`",
     "named": false
   },
   {
@@ -376,10 +450,6 @@
   },
   {
     "type": "on",
-    "named": true
-  },
-  {
-    "type": "placeholder",
     "named": true
   },
   {

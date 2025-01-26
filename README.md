@@ -31,7 +31,10 @@
                 HTML 200
         }
         ```
-- [ ] Matchers
+- [x] Matchers
+    - [x] `/path`
+    - [x] `*`
+    - [x] `@post`
 - [x] Placeholders
 - [x] Snippets
     - [x] `import` directive
@@ -45,3 +48,6 @@
     - [x] `boolean`
     - [x] `time` (`1s`, `1m`, `1h`, `1d`)
     - [x] `size` (`1KB`, `1MiB`)
+- [ ] Expressions
+    - [x] After-placeholder expressions (`{method}.startsWith("P")`)
+    - [ ] Expressions (`header({'Connection':'*Upgrade*','Upgrade':'websocket'}`) 

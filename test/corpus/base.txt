@@ -48,7 +48,7 @@ example.com {
     (block
       (directive
         (keyword)
-        (value)
+        (matcher)
         (value))
       (directive
         (keyword)
