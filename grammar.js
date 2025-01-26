@@ -54,7 +54,7 @@ module.exports = grammar({
 
     // NOTE: Snippets
     // You can pass arguments to an imported configuration (snippets or files) and use them
-    argv: (_) => token(seq("{args[", repeat1(unicodeDigit), "]")),
+    argv: (_) => token(seq("{args[", repeat1(/[0-9]/), "]}")),
     // You can also pass an optional block to an imported snippet, and use them
     sblock: (_) => token("{block}"),
     snippet: ($) => seq($.snippet_name, $.block),

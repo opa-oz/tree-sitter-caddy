@@ -1,20 +1,26 @@
 (comment) @comment @spell
 
 [ 
-  (value) 
   (env)
-  (placeholder)
   (argv)
   (block_variable)
-] @variable
+  (placeholder)
+] @constant
 
+(value) @variable
 (directive (keyword) @attribute)
+(global_options (option (keyword) @attribute))
 
 (keyword) @keyword
 
-(global_options (keyword) @constant)
-
 (boolean) @boolean
+
+(placeholder
+  [
+    "{"
+    "}"
+  ] @punctuation.special)
+
 
 [
   (auto)
