@@ -30,4 +30,5 @@ example.com {
   (server
     (env)
     (block
-      (directive))))
+      (directive
+        (keyword)))))

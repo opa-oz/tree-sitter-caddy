@@ -56,7 +56,8 @@ example.com {
       (directive
         (keyword)
         (value))
-      (directive))))
+      (directive
+        (keyword)))))
 
 
 ==================
@@ -93,7 +94,8 @@ http://127.0.0.1 {
     (address)
     (address)
     (block
-      (directive))))
+      (directive
+        (keyword)))))
 
 ==================
 If multiple sites share the same definition, you can list all of them together
@@ -126,19 +128,22 @@ www.example.com {
     (address)
     (address)
     (block
-      (directive)))
+      (directive
+        (keyword))))
   (comment)
   (server
     (address)
     (address)
     (address)
     (block
-      (directive)))
+      (directive
+        (keyword))))
   (comment)
   (server
     (address)
     (address)
     (address)
     (block
-      (directive))))
+      (directive
+        (keyword)))))
 

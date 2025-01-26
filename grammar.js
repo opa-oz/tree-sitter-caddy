@@ -137,7 +137,7 @@ module.exports = grammar({
         ),
         $._newline,
       ),
-    _function: ($) => seq($._word, $._newline),
+    _function: ($) => seq(alias($._word, $.keyword), $._newline),
     directive: ($) => choice($._attribute, $._function),
 
     // NOTE: Matchers

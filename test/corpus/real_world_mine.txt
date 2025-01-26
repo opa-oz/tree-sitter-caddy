@@ -93,7 +93,8 @@ malinka.proxmox.opa-oz.live {
                 (keyword)
                 (value)
                 (block
-                  (directive)))))))
+                  (directive
+                    (keyword))))))))
       (server
         (address)
         (block
@@ -116,7 +117,8 @@ malinka.proxmox.opa-oz.live {
                 (keyword)
                 (value)
                 (block
-                  (directive)))))))
+                  (directive
+                    (keyword))))))))
       (server
         (address)
         (block
@@ -139,7 +141,8 @@ malinka.proxmox.opa-oz.live {
                 (keyword)
                 (value)
                 (block
-                  (directive)))))))
+                  (directive
+                    (keyword))))))))
       (server
         (address)
         (block
@@ -162,4 +165,5 @@ malinka.proxmox.opa-oz.live {
                 (keyword)
                 (value)
                 (block
-                  (directive))))))))
+                  (directive
+                    (keyword)))))))))

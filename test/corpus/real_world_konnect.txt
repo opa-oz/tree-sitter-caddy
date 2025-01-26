@@ -131,7 +131,8 @@ https://github.com/Kopano-dev/konnect
         (matcher)
         (ip_literal)
         (block
-          (directive)))
+          (directive
+            (keyword))))
       (directive
         (keyword)
         (matcher)
@@ -141,7 +142,8 @@ https://github.com/Kopano-dev/konnect
         (matcher)
         (ip_literal)
         (block
-          (directive)))
+          (directive
+            (keyword))))
 
       (comment)
       (directive
@@ -149,7 +151,8 @@ https://github.com/Kopano-dev/konnect
         (matcher)
         (ip_literal)
         (block
-          (directive)))
+          (directive
+            (keyword))))
       (comment)
       (comment)
       (comment)
