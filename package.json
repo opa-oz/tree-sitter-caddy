@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-caddy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Caddyfile support",
   "repository": "https://github.com/opa-oz/tree-sitter-caddy",
   "license": "GPL-3.0",
@@ -33,10 +33,10 @@
   },
   "devDependencies": {
     "prebuildify": "^6.0.1",
-    "tree-sitter-cli": "^0.24.4"
+    "tree-sitter-cli": "^0.26.3"
   },
   "peerDependencies": {
-    "tree-sitter": "^0.21.1"
+    "tree-sitter": "^0.25.1"
   },
   "peerDependenciesMeta": {
     "tree-sitter": {
