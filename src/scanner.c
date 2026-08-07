@@ -3,6 +3,8 @@
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+#define MAX_INDENT_DEPTH 1024
+
 #define VEC_RESIZE(vec, _cap)                                                  \
     void *tmp = realloc((vec).data, (_cap) * sizeof((vec).data[0]));           \
     assert(tmp != NULL);                                                       \
@@ -81,7 +83,11 @@ void tree_sitter_caddy_external_scanner_deserialize(void *payload,
     VEC_PUSH(scanner->indents, 0);
 
     if (length > 0) {
-        for (size_t i = 0; i < length; i++) {
+        unsigned max_push = length;
+        if (max_push > MAX_INDENT_DEPTH - 1) {
+            max_push = MAX_INDENT_DEPTH - 1;
+        }
+        for (size_t i = 0; i < max_push; i++) {
             VEC_PUSH(scanner->indents, (unsigned char)buffer[i]);
         }
         return;
@@ -127,9 +133,11 @@ bool tree_sitter_caddy_external_scanner_scan(void *payload, TSLexer *lexer,
 
         if (indent_length > VEC_BACK(scanner->indents) &&
             valid_symbols[INDENT]) {
-            VEC_PUSH(scanner->indents, indent_length);
-            lexer->result_symbol = INDENT;
-            return true;
+            if (scanner->indents.len < MAX_INDENT_DEPTH) {
+                VEC_PUSH(scanner->indents, indent_length);
+                lexer->result_symbol = INDENT;
+                return true;
+            }
         }
         if (indent_length < VEC_BACK(scanner->indents) &&
             valid_symbols[DEDENT]) {
